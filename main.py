@@ -8,7 +8,7 @@ if not os.path.exists('data'):
     os.makedirs('data')
 
     
-print("Hello, welcome to Arian Hotel")
+print("Hello, Welcome to the Arian Azarnioshe online hotel reservation page.")
 def main_menu():
     
     print("1. Log in")
