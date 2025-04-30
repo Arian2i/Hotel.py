@@ -1,5 +1,10 @@
 import json
 
+
+USERS_FILE = 'data/users.json'
+ROOMS_FILE = 'data/rooms.json'
+
+
 def load_json(filename):
     try:
         with open(filename, 'r') as f:
@@ -8,6 +13,7 @@ def load_json(filename):
         return []
     except json.JSONDecodeError:
         return []
+
 
 def save_json(filename, data):
     with open(filename, 'w') as f:

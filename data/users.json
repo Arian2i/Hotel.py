@@ -1,0 +1,24 @@
+[
+    {
+        "name": "Arian Azar",
+        "phone": "09123456789",
+        "password": "c64306c91d63dfeed553ccc9e3ba29bc7e84449a67c5714a2f5f497d140f845f",
+        "national_code": "372",
+        "wallet": 500,
+        "reserved_room": null,
+        "history": [
+            {
+                "room": "402",
+                "price": 400,
+                "checkin": "Today",
+                "checkout": "2025-04-30 13:38:58"
+            },
+            {
+                "room": "103",
+                "price": 100,
+                "checkin": "2025-04-30 13:42:03",
+                "checkout": "2025-04-30 13:42:15"
+            }
+        ]
+    }
+]

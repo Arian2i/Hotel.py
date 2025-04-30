@@ -1,54 +1,85 @@
-from data_handler import load_json, save_json
+import json
+import os
+import hashlib
+import random
 
-USERS_FILE = 'users.json'
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-def register_user():
-    users = load_json(USERS_FILE)
+def load_users():
+    if os.path.exists('data/users.json'):
+        with open('data/users.json', 'r') as f:
+            return json.load(f)
+    return []
+
+def save_users(users):
+    with open('data/users.json', 'w') as f:
+        json.dump(users, f, indent=4)
+
+def generate_otp():
+    return str(random.randint(1000, 9999))
+
+def register():
+    users = load_users()
+    phone = input("Enter your phone number: ")
+
     
-    name = input("Enter full name: ")
-    phone = input("Enter phone number: ")
-    national_code = input("Enter national id: ")
-
-    # check for existing user
     for user in users:
-        if user['phone'] == phone or user['national_code'] == national_code:
-            print("User already registered.")
-            return None
+        if user["phone"] == phone:
+            print("This phone number is already registered.")
+            return
 
+    otp = generate_otp()
+    print(f"Your OTP is: {otp}")  
+
+    user_otp = input("Enter the OTP: ")
+    if user_otp != otp:
+        print("Invalid OTP.")
+        return
+
+    name = input("Enter your full name: ")
+    national_code = input("Enter your national ID: ")
+    
+    
+    password = input("Set your password: ")
+    hashed_password = hash_password(password)
+
+    
     while True:
         try:
-            balance = float(input("Enter wallet balance ($100–$1000): "))
-            if 100 <= balance <= 1000:
+            wallet = int(input("Enter your wallet balance ($100-$1000): "))
+            if 100 <= wallet <= 1000:
                 break
             else:
-                print("Amount must be between 100 and 1000.")
+                print("Balance must be between 100 and 1000.")
         except ValueError:
-            print("Please enter a valid number.")
+            print("Invalid number.")
 
-    new_user = {
+    user_data = {
         "name": name,
         "phone": phone,
+        "password": hashed_password,
         "national_code": national_code,
-        "wallet": balance,
-        "history": [],
-        "reserved_room": None
+        "wallet": wallet,
+        "reserved_room": None,
+        "history": []
     }
 
-    users.append(new_user)
-    save_json(USERS_FILE, users)
-    print("Registration successful. Logged in as", name)
-    return new_user
+    users.append(user_data)
+    save_users(users)
+    print("Registration successful!")
 
 
-def login_user():
-    users = load_json(USERS_FILE)
-    phone = input("Enter phone number: ")
-    national_code = input("Enter national code: ")
+def login():
+    users = load_users()
+    phone = input("Enter your phone number: ")
+    password = input("Enter your password: ")
+    hashed = hash_password(password)
 
     for user in users:
-        if user['phone'] == phone and user['national_code'] == national_code:
-            print("Login successful. Welcome,", user['name'])
+        if user["phone"] == phone and user["password"] == hashed:
+            print("Login successful!")
             return user
 
-    print("Invalid login credentials.")
+    print("Invalid phone number or password.")
     return None

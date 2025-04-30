@@ -1,4 +1,10 @@
 import json
+import os
+
+
+if not os.path.exists('data'):
+    os.makedirs('data')
+
 
 rooms = {}
 for floor in range(1, 5):  # Floors 1 to 4
@@ -10,7 +16,8 @@ for floor in range(1, 5):  # Floors 1 to 4
             "status": "available"
         }
 
-with open('rooms.json', 'w') as f:
+
+with open('data/rooms.json', 'w') as f:
     json.dump(rooms, f, indent=4)
 
 print("Rooms initialized successfully.")
